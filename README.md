@@ -14,7 +14,7 @@
 * operator must have valid credentials to access managed (--keytab ssh://...) and configuration management (--puppetstorage ssh://...) node
 
 1. install rekey utility
-	* git clone rsyslog3.git repo
+	* `git clone https://rsyslog.metacentrum.cz/rekey.git`
 	* create `kadmin-rekey.conf` = `/etc/heimdal-kdc/kdc.conf` + `/etc/krb5.conf` + edit `[kadmin] default_keys`
 	* test rekeying local test keytab (see `tests/rekey_service_heimdal.sh`)
 
