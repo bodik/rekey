@@ -5,7 +5,7 @@
 . /puppet/metalib/bin/lib.sh
 
 
-BASE="$(readlink -f $(dirname $(readlink -f $0))/../..)"
+BASE="$(readlink -f $(dirname $(readlink -f $0))/..)"
 REMOTE=$1
 checkzero ${REMOTE}
 
@@ -37,7 +37,7 @@ echo "WARN: >>> check kvno and service ticket lifetime"
 
 
 echo "========== INFO: rekey client begin"
-${BASE}/krb/bin/rekey.py --keytab ssh://${REMOTE}${KEYTAB} --principal ${PRINCIPAL} --puppetstorage ssh://${REMOTE}/dev/shm/puppetstoragetest --debug
+${BASE}/rekey.py --keytab ssh://${REMOTE}${KEYTAB} --principal ${PRINCIPAL} --puppetstorage ssh://${REMOTE}/dev/shm/puppetstoragetest --debug
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 rekey client"
 fi
@@ -53,7 +53,7 @@ echo "WARN: >>> check kvno and service ticket lifetime"
 
 
 echo "========== INFO: rekey server begin"
-${BASE}/krb/bin/rekey.py --keytab /etc/krb5.keytab --principal "nfs/$(hostname -f)" --debug
+${BASE}/rekey.py --keytab /etc/krb5.keytab --principal "nfs/$(hostname -f)" --debug
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 rekey server"
 fi

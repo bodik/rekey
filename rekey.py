@@ -18,7 +18,7 @@ import urllib.parse
 
 
 ##rekey config must be enforced through env, otherwise /etc/krb5.conf could override values
-os.environ["KRB5_CONFIG"] = "/etc/heimdal-kdc/kadmin-rekey.conf"
+os.environ["KRB5_CONFIG"] = "%s/kadmin-rekey.conf" % os.path.dirname(os.path.abspath(__file__))
 SUCCESS, ERROR = 0, 1
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, stream=sys.stdout, format='%(levelname)s %(message)s')

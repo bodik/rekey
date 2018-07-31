@@ -5,7 +5,7 @@
 . /puppet/metalib/bin/lib.sh
 
 
-BASE="$(readlink -f $(dirname $(readlink -f $0))/../..)"
+BASE="$(readlink -f $(dirname $(readlink -f $0))/..)"
 KEYTAB="/tmp/rekey_service.keytab"
 PRINCIPAL="hostx/$(hostname -f)"
 export KRB5CCNAME="/tmp/rekey_service.ccache"
@@ -23,7 +23,7 @@ kdestroy
 
 
 echo "========== INFO: create old key"
-KRB5_CONFIG=/etc/heimdal-kdc/kadmin-weakcrypto.conf kadmin.heimdal --local ank --use-defaults --random-key ${PRINCIPAL}
+KRB5_CONFIG=${BASE}/kadmin-weakcrypto.conf kadmin.heimdal --local ank --use-defaults --random-key ${PRINCIPAL}
 kadmin.heimdal --local ext_keytab --keytab=${KEYTAB} ${PRINCIPAL}
 echo "INFO: weak crypto principal list"
 kadmin.heimdal --local get ${PRINCIPAL}
@@ -55,7 +55,7 @@ klist -v
 
 
 echo "========== INFO: rekey begin"
-${BASE}/krb/bin/rekey.py --keytab ${KEYTAB} --principal ${PRINCIPAL} --debug
+${BASE}/rekey.py --keytab ${KEYTAB} --principal ${PRINCIPAL} --debug
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 rekey"
 fi

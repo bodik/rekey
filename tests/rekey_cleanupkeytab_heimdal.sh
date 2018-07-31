@@ -5,7 +5,7 @@
 . /puppet/metalib/bin/lib.sh
 
 
-BASE="$(readlink -f $(dirname $(readlink -f $0))/../..)"
+BASE="$(readlink -f $(dirname $(readlink -f $0))/..)"
 KEYTAB="/tmp/rekey_service.keytab"
 PRINCIPAL="hostx/$(hostname -f)@RSYSLOG3"
 
@@ -27,7 +27,7 @@ ktutil --keytab=${KEYTAB} list
 
 
 echo "========== INFO: rekey begin"
-${BASE}/krb/bin/rekey.py --keytab ${KEYTAB} --principal ${PRINCIPAL} --action cleanupkeytab --debug
+${BASE}/rekey.py --keytab ${KEYTAB} --principal ${PRINCIPAL} --action cleanupkeytab --debug
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 rekey"
 fi

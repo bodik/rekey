@@ -5,7 +5,7 @@
 . /puppet/metalib/bin/lib.sh
 
 
-BASE="$(readlink -f $(dirname $(readlink -f $0))/../..)"
+BASE="$(readlink -f $(dirname $(readlink -f $0))/..)"
 REMOTE=$1
 checkzero ${REMOTE}
 
@@ -31,7 +31,7 @@ klist -v
 
 
 echo "========== INFO: rekey begin"
-${BASE}/krb/bin/rekey.py --keytab ssh://${REMOTE}${KEYTAB} --principal ${PRINCIPAL} --puppetstorage ssh://${REMOTE}/dev/shm/puppetstoragetest --debug
+${BASE}/rekey.py --keytab ssh://${REMOTE}${KEYTAB} --principal ${PRINCIPAL} --puppetstorage ssh://${REMOTE}/dev/shm/puppetstoragetest --debug
 if [ $? -ne 0 ]; then
 	rreturn 1 "$0 rekey"
 fi
