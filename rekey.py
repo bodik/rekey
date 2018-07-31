@@ -127,10 +127,8 @@ class KadminLocalHeimdal(Kadmin):
 
 	@staticmethod
 	def keytab_addkey(keytab, principal, kvno, enctype, password):
-		password_key = subprocess.check_output(shlex.split( \
-			"string2key --principal=%s --keytype=%s %s" % (principal, enctype, password))).decode("UTF-8").split(" ")[-1]
 		subprocess.check_output(shlex.split( \
-			"ktutil --keytab=%s add --principal=%s --kvno=%s --enctype=%s --hex --password=%s" % (keytab, principal, kvno, enctype, password_key)))
+			"ktutil --keytab=%s add --principal=%s --kvno=%s --enctype=%s --password=%s" % (keytab, principal, kvno, enctype, password)))
 		return True
 
 
