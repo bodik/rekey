@@ -126,7 +126,7 @@ class KadminLocalHeimdal(Kadmin):
 
 
 	def keytab_addkey(self, keytab, principal, kvno, enctype, password):
-		cmd = "ktutil --keytab=%s add --principal=%s --kvno=%s --enctype=%s --password=%s" % (keytab, principal, kvno, enctype, password)
+		cmd = "ktutil --keytab=%s add --principal=%s --kvno=%s --enctype=%s --password='%s'" % (keytab, principal, kvno, enctype, password)
 		self.log.debug(cmd)
 		subprocess.check_output(shlex.split(cmd))
 		return True
@@ -161,7 +161,7 @@ class KadminLocalHeimdal(Kadmin):
 
 
 	def cpw(self, principal, password):
-		return self.exec_kadmin("cpw --password=%s %s" % (password, principal))
+		return self.exec_kadmin("cpw --password='%s' %s" % (password, principal))
 
 
 
