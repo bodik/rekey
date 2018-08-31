@@ -26,14 +26,20 @@
 export FQDN="xxx"; ./rekey.py --keytab ssh://{FQDN}/etc/krb5.keytab --principal host/${FQDN} --puppetstorage ssh://puppetmaster/path/krb5.keytab.${FQDN}
 ```
 
-
 3. wait for max renew time for existing service tickets to expire
-
 
 4. cleanup keytab `rekey.py --keytab X --principal Y --puppetstorage Z --action cleanupkeytab`
 ```
 export FQDN="xxx"; ./rekey.py --keytab ssh://${FQDN}/etc/krb5.keytab --principal host/${FQDN} --puppetstorage ssh://puppetmaster/path/krb5.keytab.${FQDN} --action cleanupkeytab
 ```
 
-
 5. cleanup keytab backups (`*.rekeybackup.*`)
+
+
+
+## manual rekeying
+
+* generate rekeying command by rekey-self.py and execute them manually
+```
+./rekey-self.py --keytab=/etc/krb5.keytab --principal=host/$(hostname -f)@REALMX
+```
