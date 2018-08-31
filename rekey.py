@@ -352,9 +352,9 @@ class Rekeyer(object):
 				match = re.match(r"\s*(?P<kvno>\d+)\s+(?P<enctype>\S+)\s+(?P<principal>\S+)\s+(?P<date>\S+)\s*", line.strip())
 				if match and (match.group("principal") == principal) and ((match.group("enctype") not in kdb_enctypes) or (int(match.group("kvno")) != kdb_kvno)):
 					self.log.debug("removing: %s", line)
-					self.subprocess_check_output( \
-						"ktutil --keytab=%s remove --principal=%s --kvno=%s --enctype=%s" % (self.keytab_temp, principal, int(match.group("kvno")), match.group("enctype")),
-						"cannot remove key from keytab")
+					cmd = "ktutil --keytab=%s remove --principal=%s --kvno=%s --enctype=%s" % (self.keytab_temp, principal, int(match.group("kvno")), match.group("enctype"))
+					self.log.debug(cmd)
+					self.subprocess_check_output(cmd, "cannot remove key from keytab")
 					try:
 						self.subprocess_check_output( \
 							"kdestroy --credential=%s" % principal,
