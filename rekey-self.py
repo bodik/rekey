@@ -51,6 +51,7 @@ def main():
 
 	# generate new key
 	logger.info("PHASE1 execute on service -- generate new keys for service")
+	print("export HISTFILE=/dev/null")
 	password = "".join([random.SystemRandom().choice(CHOICES) for _ in range(PASSWORD_LENGTH)])
 	for enctype in ENCTYPES:
 		print("ktutil --keytab=%s add --principal=%s --kvno=%s --enctype=%s --password='%s'" % \
@@ -60,6 +61,7 @@ def main():
 	# update kdb
 	print()
 	logger.info("PHASE2 execute on master kdc -- put keys to kdb")
+	print("export HISTFILE=/dev/null")
 	print("kadmin.heimdal --local --realm=%s cpw --password='%s' %s" % (realm, password, args.principal))
 
 
