@@ -171,8 +171,6 @@ class KadminLocalHeimdal(Kadmin):
 class Rekeyer(object):
 	CHOICES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$^&*()+/?,."
 	PASSWORD_LENGTH = 200
-	PUPPET_SUSPEND = "if [ -x /usr/local/sbin/puppet-stop ]; then /usr/local/sbin/puppet-stop rekey; while [ -n \"$(pgrep -f '^/usr/bin/ruby /usr/bin/puppet agent')\" ]; do sleep 1; done; fi"
-	PUPPET_ACTIVATE = "if [ -x /usr/local/sbin/puppet-start ]; then /usr/local/sbin/puppet-start rekey; fi"
 
 	
 	def __init__(self, kadmin, keytab):
@@ -274,11 +272,6 @@ class Rekeyer(object):
 	
 		elif self.keytab_url.scheme == "ssh":
 			if puppet_storage:
-				self.log.info("put:: suspend puppet on managed node")
-				self.subprocess_check_output( \
-					["ssh", self.keytab_url.netloc, self.PUPPET_SUSPEND],
-					"cannot suspend puppet agent")
-
 				self.log.info("put:: upload keytab to puppetstorage")
 				puppet_storage_url = urllib.parse.urlparse(puppet_storage)
 				self.subprocess_check_output( \
@@ -292,12 +285,6 @@ class Rekeyer(object):
 			self.subprocess_check_output( \
 				"scp %s %s:%s" % (self.keytab_temp, self.keytab_url.netloc, self.keytab_url.path),
 				"cannot upload updated keytab")
-	
-			if puppet_storage:
-				self.log.info("put:: activate puppet on managed node")
-				self.subprocess_check_output( \
-					["ssh", self.keytab_url.netloc, self.PUPPET_ACTIVATE],
-					"cannot activate puppet agent")
 	
 		else:
 			raise NotImplementedError
