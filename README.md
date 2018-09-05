@@ -43,3 +43,27 @@ export FQDN="xxx"; ./rekey.py --keytab ssh://${FQDN}/etc/krb5.keytab --principal
 ```
 ./rekey-self.py --keytab=/etc/krb5.keytab --principal=host/$(hostname -f)@REALMX
 ```
+
+
+## krbtgt rollover
+
+* users from base realm (RSYSLOG3h) can access trusting realm (RSYSLOG3m)
+
+### MIT Kerberos
+```
+ank -randkey krbtgt/RSYSLOG3m@RSYSLOG3h
+cpw -e des3-cbc-sha1,aes256-cts-hmac-sha1-96 -keepold -pw '' krbtgt/RSYSLOG3m@RSYSLOG3h
+getprinc krbtgt/RSYSLOG3m@RSYSLOG3h
+purgekeys -keepkvno X krbtgt/RSYSLOG3m@RSYSLOG3h
+```
+
+### Heimdal kerberos
+
+note: must have "del_enctype with specific kvno (cpw --keepold counterpart) #395" https://github.com/heimdal/heimdal/pull/395
+
+```
+ank --use-defaults --random-key krbtgt/RSYSLOG3m@RSYSLOG3h
+cpw --keepold -p '' krbtgt/RSYSLOG3m@RSYSLOG3h
+get krbtgt/RSYSLOG3m@RSYSLOG3h
+del_enctype --kvno=X krbtgt/RSYSLOG3m@RSYSLOG3h old_enctype
+```
