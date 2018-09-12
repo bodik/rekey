@@ -59,11 +59,11 @@ purgekeys -keepkvno X krbtgt/RSYSLOG3m@RSYSLOG3h
 
 ### Heimdal kerberos
 
-note: must have "del_enctype with specific kvno (cpw --keepold counterpart) #395" https://github.com/heimdal/heimdal/pull/395
+note: must have kadmin prune functionality [https://github.com/bodik/heimdal/tree/feature-h7.1-prune_principal_v1]
 
 ```
 ank --use-defaults --random-key krbtgt/RSYSLOG3m@RSYSLOG3h
 cpw --keepold -p '' krbtgt/RSYSLOG3m@RSYSLOG3h
 get krbtgt/RSYSLOG3m@RSYSLOG3h
-del_enctype --kvno=X krbtgt/RSYSLOG3m@RSYSLOG3h old_enctype
+prune krbtgt/RSYSLOG3m@RSYSLOG3h prunekvno
 ```
